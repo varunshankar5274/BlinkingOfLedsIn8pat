@@ -7,10 +7,10 @@ volatile uint8_t pattern_type = 0;
 volatile uint8_t button_pressed = 0;
 
 void basic_pattern(uint8_t led) {
-    uint8_t portd_mask = (led & 0xC0) >> 6;  // Upper 2 bits for PD6, PD7
-    uint8_t portb_mask = led & 0x3F;         // Lower 6 bits for PB0 - PB5
+    uint8_t portd_mask = (led & 0xC0) >> 6;  
+    uint8_t portb_mask = led & 0x3F;         
 
-    // Update PORTD and PORTB with the new patterns
+    
     PORTD = (PORTD & 0x3F) | (portd_mask << 6);
     PORTB = (PORTB & 0xC0) | portb_mask;
     _delay_ms(500);
@@ -88,14 +88,14 @@ void pat7() {
 }
 
 int main() {
-    DDRD |= (1 << PD6) | (1 << PD7);  // Set PD6 and PD7 as outputs
-    DDRB |= (1 << PB0) | (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4) | (1 << PB5);  // Set PB0 - PB5 as outputs
-    DDRD &= ~(1 << PD2);  // Set PD2 as input for button
-    PORTD |= (1 << PD2);  // Enable pull-up resistor on PD2
+    DDRD |= (1 << PD6) | (1 << PD7);
+    DDRB |= (1 << PB0) | (1 << PB1) | (1 << PB2) | (1 << PB3) | (1 << PB4) | (1 << PB5);
+    DDRD &= ~(1 << PD2);
+    PORTD |= (1 << PD2); 
 
-    EICRA |= (1 << ISC01);  // Trigger INT0 on falling edge
-    EIMSK |= (1 << INT0);   // Enable external interrupt INT0
-    sei();  // Enable global interrupts
+    EICRA |= (1 << ISC01);
+    EIMSK |= (1 << INT0);
+    sei();
 
     while (1) {
         button_pressed = 0;
